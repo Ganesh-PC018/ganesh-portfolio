@@ -154,9 +154,13 @@
             class="nav-link text-2xl font-bold text-light-accent dark:text-dark-accent"
             >GM</a
           >
+<<<<<<< HEAD
           <nav
             class="hidden lg:flex items-center space-x-6 text-gray-900 dark:text-white"
           >
+=======
+          <nav class="hidden lg:flex items-center space-x-6">
+>>>>>>> 5fdb4b63b4883f91d776c970f9ee43245a9fe6ef
             <a
               href="#home"
               data-page="home"
@@ -338,6 +342,7 @@
           >
             Currently interning at C-DAC in Cyber Security.
           </p>
+<<<<<<< HEAD
           <!-- Social Profiles Links -->
           <div
             class="mt-6 flex flex-wrap justify-center gap-6 text-light-accent dark:text-dark-accent text-lg font-medium"
@@ -378,6 +383,8 @@
               >GitHub</a
             >
           </div>
+=======
+>>>>>>> 5fdb4b63b4883f91d776c970f9ee43245a9fe6ef
           <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
             <a
               href="#contact"
@@ -408,6 +415,7 @@
             >
               I am a dedicated and enthusiastic Information Technology
               undergraduate with a strong foundation in software development,
+<<<<<<< HEAD
               specializing in the MERN stack (MongoDB, Express.js, React,
               Node.js). My technical expertise is complemented by hands-on
               experience in cyber security, gained through a rigorous internship
@@ -442,6 +450,20 @@
               versatile technologist who can adapt to new challenges. I am
               enthusiastic about collaborating with dynamic teams and leveraging
               my skills to deliver robust, scalable, and secure solutions.
+=======
+              particularly using the MERN stack. My passion extends to cyber
+              security, where I am gaining practical experience through an
+              internship at C-DAC. I thrive on solving complex problems, which
+              is reflected in my active participation in competitive
+              programming.
+            </p>
+            <p
+              class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed text-justify"
+            >
+              I am always eager to learn new technologies and apply my skills to
+              create impactful solutions. My goal is to contribute to innovative
+              projects and grow as a versatile technology professional.
+>>>>>>> 5fdb4b63b4883f91d776c970f9ee43245a9fe6ef
             </p>
           </div>
           <div>
@@ -485,6 +507,7 @@
                   Graduated: 2023 | Percentage: 90.33%
                 </p>
               </div>
+<<<<<<< HEAD
               <div
                 class="p-6 bg-light-bg dark:bg-dark-muted rounded-lg shadow-md border border-light-border dark:border-dark-border"
               >
@@ -523,6 +546,8 @@
                   SSC: 2020 | Percentage: 98%
                 </p>
               </div>
+=======
+>>>>>>> 5fdb4b63b4883f91d776c970f9ee43245a9fe6ef
             </div>
           </div>
         </div>
@@ -868,7 +893,11 @@
         class="page-section py-20 md:py-28 px-4 sm:px-6 lg:px-8"
       >
         <h2
+<<<<<<< HEAD
           class="text-4xl font-extrabold text-center text-light-text-primary dark:text-black mb-12"
+=======
+          class="text-4xl font-extrabold text-center text-light-text-primary dark:text-dark-text-primary mb-12"
+>>>>>>> 5fdb4b63b4883f91d776c970f9ee43245a9fe6ef
         >
           Get In Touch
         </h2>
@@ -1028,6 +1057,7 @@
           localStorage.getItem("darkMode") === "true" ||
           (!("darkMode" in localStorage) &&
             window.matchMedia("(prefers-color-scheme: dark)").matches);
+<<<<<<< HEAD
 
         applyTheme(isDarkMode);
 
@@ -1139,6 +1169,101 @@
               target.setAttribute("tabindex", "-1");
               target.focus();
             }
+=======
+
+        applyTheme(isDarkMode);
+
+        darkModeToggle.addEventListener("click", () => {
+          isDarkMode = !isDarkMode;
+          localStorage.setItem("darkMode", isDarkMode);
+          applyTheme(isDarkMode);
+        });
+
+        // Mobile Menu
+        const mobileMenuButton = document.getElementById("mobileMenuButton");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const hamburgerIcon = document.querySelector(".hamburger");
+
+        mobileMenuButton.addEventListener("click", () => {
+          const isMenuOpen = !mobileMenu.classList.contains("hidden");
+          mobileMenu.classList.toggle("hidden", isMenuOpen);
+          mobileMenuButton.setAttribute("aria-expanded", String(!isMenuOpen));
+          mobileMenuButton.setAttribute(
+            "aria-label",
+            isMenuOpen ? "Open menu" : "Close menu"
+          );
+          hamburgerIcon.classList.toggle("open", !isMenuOpen);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        // Page Navigation
+        const navLinks = document.querySelectorAll(
+          ".nav-link, .mobile-nav-link"
+        );
+        const pageSections = document.querySelectorAll(".page-section");
+        const desktopNavLinks = document.querySelectorAll(
+          "header nav.hidden a.nav-link"
+        );
+
+        function showPage(pageId) {
+          pageSections.forEach((section) => section.classList.remove("active"));
+          const activePage = document.getElementById(pageId);
+          if (activePage) activePage.classList.add("active");
+
+          desktopNavLinks.forEach((link) => {
+            link.classList.toggle("active", link.dataset.page === pageId);
+          });
+
+          document.querySelectorAll(".mobile-nav-link").forEach((link) => {
+            const isActive = link.dataset.page === pageId;
+            link.classList.toggle("text-light-accent", isActive);
+            link.classList.toggle("dark:text-dark-accent", isActive);
+            link.classList.toggle("font-semibold", isActive);
+          });
+        }
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const pageId = link.dataset.page;
+            if (pageId) showPage(pageId);
+          });
+        });
+
+        showPage("home");
+
+        // Contact Form
+        const contactForm = document.getElementById("contactForm");
+        const formMessage = document.getElementById("formMessage");
+
+        if (contactForm) {
+          contactForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            formMessage.textContent = "Sending your message...";
+            formMessage.className =
+              "mt-4 text-center text-sm text-blue-600 dark:text-blue-400";
+            setTimeout(() => {
+              formMessage.textContent =
+                "Thank you! Your message has been sent (simulated).";
+              formMessage.className =
+                "mt-4 text-center text-sm text-green-600 dark:text-green-400";
+              contactForm.reset();
+            }, 1500);
+          });
+        }
+
+        // Skip to content
+        const skipLink = document.querySelector(".skip-to-content");
+        if (skipLink) {
+          skipLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            const targetId = skipLink.getAttribute("href").substring(1);
+            const target = document.getElementById(targetId);
+            if (target) {
+              target.setAttribute("tabindex", "-1");
+              target.focus();
+            }
+>>>>>>> 5fdb4b63b4883f91d776c970f9ee43245a9fe6ef
           });
         }
 
