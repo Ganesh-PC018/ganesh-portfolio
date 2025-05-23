@@ -1,684 +1,1117 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ganesh Mane - MERN Stack Developer</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <script>
-        tailwind.config = {
-            darkMode: 'class', // or 'media'
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        roboto: ['Roboto', 'sans-serif'],
-                        poppins: ['Poppins', 'sans-serif'],
-                    },
-                    colors: {
-                        // Light Mode (default)
-                        'light-bg': '#F9FAFB', // Off-white
-                        'light-text-primary': '#111827', // Very dark gray/black (Tailwind gray-900)
-                        'light-text-secondary': '#4B5563', // Gray (Tailwind gray-600)
-                        'light-accent': '#2563EB', // Professional Blue (Tailwind blue-600)
-                        'light-accent-hover': '#1D4ED8', // Darker Blue (Tailwind blue-700)
-                        'light-muted': '#E5E7EB', // Soft Gray (Tailwind gray-200)
-                        'light-border': '#D1D5DB', // Tailwind gray-300
+      tailwind.config = {
+        darkMode: "class", // or 'media'
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              roboto: ["Roboto", "sans-serif"],
+              poppins: ["Poppins", "sans-serif"],
+            },
+            colors: {
+              // Light Mode (default)
+              "light-bg": "#F9FAFB", // Off-white
+              "light-text-primary": "#111827", // Very dark gray/black (Tailwind gray-900)
+              "light-text-secondary": "#4B5563", // Gray (Tailwind gray-600)
+              "light-accent": "#2563EB", // Professional Blue (Tailwind blue-600)
+              "light-accent-hover": "#1D4ED8", // Darker Blue (Tailwind blue-700)
+              "light-muted": "#E5E7EB", // Soft Gray (Tailwind gray-200)
+              "light-border": "#D1D5DB", // Tailwind gray-300
 
-                        // Dark Mode
-                        'dark-bg': '#111827', // Deep charcoal (Tailwind gray-900)
-                        'dark-text-primary': '#F3F4F6', // Light Gray (Tailwind gray-100)
-                        'dark-text-secondary': '#9CA3AF', // Medium Gray (Tailwind gray-400)
-                        'dark-accent': '#3B82F6', // Bright Blue (Tailwind blue-500)
-                        'dark-accent-hover': '#2563EB', // Slightly darker bright blue (Tailwind blue-600)
-                        'dark-muted': '#374151', // Darker Gray (Tailwind gray-700)
-                        'dark-border': '#4B5563', // Tailwind gray-600
-                    }
-                }
-            }
-        }
+              // Dark Mode
+              "dark-bg": "#111827", // Deep charcoal (Tailwind gray-900)
+              "dark-text-primary": "#F3F4F6", // Light Gray (Tailwind gray-100)
+              "dark-text-secondary": "#9CA3AF", // Medium Gray (Tailwind gray-400)
+              "dark-accent": "#3B82F6", // Bright Blue (Tailwind blue-500)
+              "dark-accent-hover": "#2563EB", // Slightly darker bright blue (Tailwind blue-600)
+              "dark-muted": "#374151", // Darker Gray (Tailwind gray-700)
+              "dark-border": "#4B5563", // Tailwind gray-600
+            },
+          },
+        },
+      };
     </script>
     <style>
-        /* Base styles */
-        body {
-            font-family: 'Inter', sans-serif;
-            @apply bg-light-bg text-light-text-primary dark:bg-dark-bg dark:text-dark-text-primary transition-colors duration-300;
+      /* Base styles */
+      body {
+        font-family: "Inter", sans-serif;
+        @apply bg-light-bg text-light-text-primary dark:bg-dark-bg dark:text-dark-text-primary transition-colors duration-300;
+      }
+      /* Active nav link style */
+      .nav-link.active {
+        @apply text-light-accent dark:text-dark-accent font-semibold;
+      }
+      /* Section transitions */
+      .page-section {
+        display: none; /* Hidden by default, JS will show active page */
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      .page-section.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
         }
-        /* Active nav link style */
-        .nav-link.active {
-            @apply text-light-accent dark:text-dark-accent font-semibold;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        /* Section transitions */
-        .page-section {
-            display: none; /* Hidden by default, JS will show active page */
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        .page-section.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        /* Hamburger menu icon transition */
-        .hamburger div {
-            @apply bg-light-text-primary dark:bg-dark-text-primary;
-            transition: all 0.3s ease-in-out;
-        }
-        .hamburger.open .line1 {
-            transform: rotate(-45deg) translate(-5px, 6px);
-        }
-        .hamburger.open .line2 {
-            opacity: 0;
-        }
-        .hamburger.open .line3 {
-            transform: rotate(45deg) translate(-5px, -6px);
-        }
-        /* Skip to content link styling */
-        .skip-to-content {
-            @apply sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:p-2 focus:bg-light-accent focus:text-white dark:focus:bg-dark-accent dark:focus:text-dark-text-primary rounded-md;
-        }
-        /* Custom scrollbar for webkit browsers (optional) */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            @apply bg-light-muted dark:bg-dark-muted;
-        }
-        ::-webkit-scrollbar-thumb {
-            @apply bg-light-accent dark:bg-dark-accent rounded-full;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            @apply bg-light-accent-hover dark:bg-dark-accent-hover;
-        }
-        /* Styling for AI generated content */
-        .ai-generated-content {
-            @apply mt-3 p-3 border border-dashed border-light-accent/50 dark:border-dark-accent/50 rounded-md bg-light-accent/5 dark:bg-dark-accent/10 text-sm;
-        }
-        .loading-spinner {
-            border: 2px solid #f3f3f3; /* Light grey */
-            border-top: 2px solid #3498db; /* Blue */
-            border-radius: 50%;
-            width: 16px;
-            height: 16px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-left: 8px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body class="antialiased">
+      }
+      /* Hamburger menu icon transition */
+      /* Hamburger menu icon transition */
+      .hamburger div {
+        /* Use Tailwind utility classes in HTML or fallback color here */
+        background-color: #1f2937; /* fallback for light-text-primary - dark gray */
+        transition: all 0.3s ease-in-out;
+      }
 
+      .dark .hamburger div {
+        background-color: #f9fafb; /* fallback for dark-text-primary - light gray */
+      }
+
+      .hamburger.open .line1 {
+        transform: rotate(-45deg) translate(-5px, 6px);
+      }
+
+      .hamburger.open .line2 {
+        opacity: 0;
+      }
+
+      .hamburger.open .line3 {
+        transform: rotate(45deg) translate(-5px, -6px);
+      }
+
+      /* Skip to content link styling */
+      .skip-to-content {
+        @apply sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:p-2 focus:bg-light-accent focus:text-white dark:focus:bg-dark-accent dark:focus:text-dark-text-primary rounded-md;
+      }
+      /* Custom scrollbar for webkit browsers (optional) */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        @apply bg-light-muted dark:bg-dark-muted;
+      }
+      ::-webkit-scrollbar-thumb {
+        @apply bg-light-accent dark:bg-dark-accent rounded-full;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        @apply bg-light-accent-hover dark:bg-dark-accent-hover;
+      }
+      /* Styling for AI generated content */
+      .ai-generated-content {
+        @apply mt-3 p-3 border border-dashed border-light-accent/50 dark:border-dark-accent/50 rounded-md bg-light-accent/5 dark:bg-dark-accent/10 text-sm;
+      }
+      .loading-spinner {
+        border: 2px solid #f3f3f3; /* Light grey */
+        border-top: 2px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        margin-left: 8px;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body class="antialiased">
     <!-- <a href="#main-content" class="skip-to-content">Skip to main content</a> -->
 
-    <header id="header" class="sticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-light-border dark:lg:border-dark-border bg-light-bg/95 dark:bg-dark-bg/95">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <a href="#about" data-page="about" class="nav-link text-2xl font-bold text-light-accent dark:text-dark-accent">GM</a>
-                <nav class="hidden lg:flex items-center space-x-6">
-                    <a href="#home" data-page="home" class="nav-link active hover:text-light-accent dark:hover:text-dark-accent transition-colors">Home</a>
-                    <a href="#about" data-page="about" class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors">About</a>
-                    <a href="#projects" data-page="projects" class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors">Projects</a>
-                    <a href="#experience" data-page="experience" class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors">Experience</a>
-                    <a href="#skills" data-page="skills" class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors">Skills</a>
-                    <a href="#resume" data-page="resume" class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors">Resume</a>
-                    <a href="#contact" data-page="contact" class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors">Contact</a>
-                </nav>
+    <header
+      id="header"
+      class="sticky top-0 z-40 w-full backdrop-blur flex-none transition-colors duration-500 lg:z-50 lg:border-b lg:border-light-border dark:lg:border-dark-border bg-light-bg/95 dark:bg-dark-bg/95"
+    >
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <a
+            href="#about"
+            data-page="about"
+            class="nav-link text-2xl font-bold text-light-accent dark:text-dark-accent"
+            >GM</a
+          >
+          <nav class="hidden lg:flex items-center space-x-6">
+            <a
+              href="#home"
+              data-page="home"
+              class="nav-link active hover:text-light-accent dark:hover:text-dark-accent transition-colors"
+              >Home</a
+            >
+            <a
+              href="#about"
+              data-page="about"
+              class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors"
+              >About</a
+            >
+            <a
+              href="#projects"
+              data-page="projects"
+              class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors"
+              >Projects</a
+            >
+            <a
+              href="#experience"
+              data-page="experience"
+              class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors"
+              >Experience</a
+            >
+            <a
+              href="#skills"
+              data-page="skills"
+              class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors"
+              >Skills</a
+            >
+            <a
+              href="#resume"
+              data-page="resume"
+              class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors"
+              >Resume</a
+            >
+            <a
+              href="#contact"
+              data-page="contact"
+              class="nav-link hover:text-light-accent dark:hover:text-dark-accent transition-colors"
+              >Contact</a
+            >
+          </nav>
 
-                <div class="flex items-center">
-                    <button id="darkModeToggle" aria-label="Toggle dark mode" class="p-2 rounded-full hover:bg-light-muted dark:hover:bg-dark-muted transition-colors">
-                        <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-light-text-secondary dark:text-dark-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                        </svg>
-                        <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-light-text-secondary dark:text-dark-text-secondary hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.66-8.66l-.707.707M5.05 5.05l-.707.707M21 12h-1M4 12H3m15.364 6.364l-.707-.707M6.364 5.05l-.707-.707M12 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                    </button>
+          <div class="flex items-center">
+            <button
+              id="darkModeToggle"
+              aria-label="Toggle dark mode"
+              class="p-2 rounded-full hover:bg-light-muted dark:hover:bg-dark-muted transition-colors"
+            >
+              <svg
+                id="moonIcon"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-light-text-secondary dark:text-dark-text-secondary"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+              <svg
+                id="sunIcon"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-light-text-secondary dark:text-dark-text-secondary hidden"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3v1m0 16v1m8.66-8.66l-.707.707M5.05 5.05l-.707.707M21 12h-1M4 12H3m15.364 6.364l-.707-.707M6.364 5.05l-.707-.707M12 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+            </button>
 
-                    <button id="mobileMenuButton" aria-label="Open menu" aria-expanded="false" class="lg:hidden p-2 ml-2 rounded-md text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent focus:outline-none focus:ring-2 focus:ring-inset focus:ring-light-accent dark:focus:ring-dark-accent">
-                        <span class="sr-only">Open main menu</span>
-                        <div class="hamburger space-y-1.5">
-                            <div class="line1 w-6 h-0.5 rounded-full"></div>
-                            <div class="line2 w-6 h-0.5 rounded-full"></div>
-                            <div class="line3 w-6 h-0.5 rounded-full"></div>
-                        </div>
-                    </button>
-                </div>
-            </div>
+            <button
+              id="mobileMenuButton"
+              aria-label="Open menu"
+              aria-expanded="false"
+              class="lg:hidden p-2 ml-2 rounded-md text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent focus:outline-none focus:ring-2 focus:ring-inset focus:ring-light-accent dark:focus:ring-dark-accent"
+            >
+              <span class="sr-only">Open main menu</span>
+              <div class="hamburger space-y-1.5">
+                <div class="line1 w-6 h-0.5 rounded-full"></div>
+                <div class="line2 w-6 h-0.5 rounded-full"></div>
+                <div class="line3 w-6 h-0.5 rounded-full"></div>
+              </div>
+            </button>
+          </div>
         </div>
+      </div>
 
-        <div id="mobileMenu" class="hidden lg:hidden absolute top-16 left-0 w-full bg-light-bg dark:bg-dark-bg shadow-lg rounded-b-lg border-t border-light-border dark:border-dark-border">
-            <nav class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#home" data-page="home" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted">Home</a>
-                <a href="#about" data-page="about" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted">About</a>
-                <a href="#projects" data-page="projects" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted">Projects</a>
-                <a href="#experience" data-page="experience" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted">Experience</a>
-                <a href="#skills" data-page="skills" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted">Skills</a>
-                <a href="#resume" data-page="resume" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted">Resume</a>
-                <a href="#contact" data-page="contact" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted">Contact</a>
-            </nav>
-        </div>
+      <div
+        id="mobileMenu"
+        class="hidden lg:hidden absolute top-16 left-0 w-full bg-light-bg dark:bg-dark-bg shadow-lg rounded-b-lg border-t border-light-border dark:border-dark-border"
+      >
+        <nav class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="#home"
+            data-page="home"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted"
+            >Home</a
+          >
+          <a
+            href="#about"
+            data-page="about"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted"
+            >About</a
+          >
+          <a
+            href="#projects"
+            data-page="projects"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted"
+            >Projects</a
+          >
+          <a
+            href="#experience"
+            data-page="experience"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted"
+            >Experience</a
+          >
+          <a
+            href="#skills"
+            data-page="skills"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted"
+            >Skills</a
+          >
+          <a
+            href="#resume"
+            data-page="resume"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted"
+            >Resume</a
+          >
+          <a
+            href="#contact"
+            data-page="contact"
+            class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium hover:bg-light-muted dark:hover:bg-dark-muted"
+            >Contact</a
+          >
+        </nav>
+      </div>
     </header>
 
-    <main id="main-content" class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-
-        <!-- <section id="home" class="page-section active min-h-[calc(100vh-10rem)] flex flex-col justify-center items-center text-center"> -->
-        <!-- <section id="home" class="h-screen flex flex-col items-center justify-center text-center"> -->
-        <section id="home" class="flex flex-col items-center justify-center text-center">
-            <div class="max-w-3xl">
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-light-text-primary dark:text-light-text-primary">
-                    Hi, I'm <span class="text-light-accent dark:text-dark-accent">Ganesh Mane</span>
-                </h1>
-                <p class="mt-4 text-lg sm:text-xl text-light-text-secondary dark:text-dark-text-secondary">
-                    A passionate MERN Stack Developer & Information Technology student at SGGS, with a keen interest in cyber security and competitive programming.
-                </p>
-                <p class="mt-2 text-md text-light-text-secondary dark:text-dark-text-secondary">
-                    Currently interning at C-DAC in Cyber Security.
-                </p>
-                <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="#contact" data-page="contact" class="nav-link inline-block px-8 py-3 text-lg font-medium text-white bg-light-accent dark:bg-dark-accent hover:bg-light-accent-hover dark:hover:bg-dark-accent-hover rounded-lg shadow-md transition-transform transform hover:scale-105">
-                        Contact Me
-                    </a>
-                    <a href="#resume-download" data-page="resume" class="nav-link inline-block px-8 py-3 text-lg font-medium text-light-accent dark:text-dark-accent border border-light-accent dark:border-dark-accent hover:bg-light-accent/10 dark:hover:bg-dark-accent/10 rounded-lg shadow-md transition-transform transform hover:scale-105">
-                        Download Resume
-                    </a>
-                </div>
-            </div>
-        </section>
-        <section id="about" class="page-section py-16 md:py-24">
-            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">About Me & Education</h2>
-            <div class="grid md:grid-cols-2 gap-12 items-start">
-                <div>
-                    <h3 class="text-2xl font-semibold mb-4">Personal Bio</h3>
-                    <p class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed mb-4 text-justify">
-                        I am a dedicated and enthusiastic Information Technology undergraduate with a strong foundation in software development, particularly using the MERN stack. My passion extends to cyber security, where I am gaining practical experience through an internship at C-DAC. I thrive on solving complex problems, which is reflected in my active participation in competitive programming.
-                    </p>
-                    <p class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed text-justify">
-                        I am always eager to learn new technologies and apply my skills to create impactful solutions. My goal is to contribute to innovative projects and grow as a versatile technology professional.
-                    </p>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-semibold mb-6">Education</h3>
-                    <div class="space-y-8">
-                        <div class="p-6 bg-light-bg dark:bg-dark-muted rounded-lg shadow-md border border-light-border dark:border-dark-border">
-                            <h4 class="text-xl font-semibold text-light-accent dark:text-dark-accent">B.Tech in Information Technology</h4>
-                            <p class="text-light-text-secondary dark:text-dark-text-secondary">S.G.G.S. Institute of Engineering and Technology, Nanded</p>
-                            <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-1">Expected Graduation: 2026 | CGPA: 8.38</p>
-                        </div>
-                        <div class="p-6 bg-light-bg dark:bg-dark-muted rounded-lg shadow-md border border-light-border dark:border-dark-border">
-                            <h4 class="text-xl font-semibold text-light-accent dark:text-dark-accent">Diploma in Computer Engineering</h4>
-                            <p class="text-light-text-secondary dark:text-dark-text-secondary">Government Polytechnic, Pune</p>
-                            <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-1">Graduated: 2023 | Percentage: 90.33%</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects" class="page-section py-16 md:py-24">
-            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">My Projects</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="project-card-item bg-light-bg dark:bg-dark-muted rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 border border-light-border dark:border-dark-border">
-                    <div class="p-6">
-                        <h3 class="project-title text-xl font-semibold mb-2 text-light-accent dark:text-dark-accent">Bank Management System</h3>
-                        <p class="project-description text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 leading-relaxed">
-                            A desktop application developed using Java Swing and MySQL for managing bank accounts, including features like account creation, deposits, and withdrawals.
-                        </p>
-                        <div class="mb-4">
-                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1">
-                                Java
-                            </span>
-                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1">
-                                Swing
-                            </span>
-                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1">
-                                JDBC
-                            </span>
-                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1">
-                                MySQL
-                            </span>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <a href="#" class="inline-block text-sm font-medium text-light-accent dark:text-dark-accent hover:underline">View Details (Soon) &rarr;</a>
-                            <button class="enhance-description-btn text-sm font-medium text-light-accent dark:text-dark-accent hover:underline">✨ Enhance Description</button>
-                        </div>
-                        <div class="ai-enhanced-description-output mt-3" style="display: none;"></div>
-                    </div>
-                </div>
-                <div class="project-card-item bg-light-bg dark:bg-dark-muted rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 border border-light-border dark:border-dark-border">
-                     <div class="p-6">
-                        <h3 class="project-title text-xl font-semibold mb-2 text-light-accent dark:text-dark-accent">Vaccine Management System</h3>
-                        <p class="project-description text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 leading-relaxed">
-                            A Java Swing application designed to track and manage vaccine appointments and inventory, utilizing JDBC for database connectivity.
-                        </p>
-                        <div class="mb-4">
-                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1">
-                                Java
-                            </span>
-                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1">
-                                Swing
-                            </span>
-                             <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1">
-                                JDBC
-                            </span>
-                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1">
-                                MySQL
-                            </span>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <a href="#" class="inline-block text-sm font-medium text-light-accent dark:text-dark-accent hover:underline">View Details (Soon) &rarr;</a>
-                            <button class="enhance-description-btn text-sm font-medium text-light-accent dark:text-dark-accent hover:underline">✨ Enhance Description</button>
-                        </div>
-                        <div class="ai-enhanced-description-output mt-3" style="display: none;"></div>
-                    </div>
-                </div>
-                <div class="project-card-item bg-light-bg dark:bg-dark-muted rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 border border-light-border dark:border-dark-border">
-                     <div class="p-6">
-                        <h3 class="project-title text-xl font-semibold mb-2 text-light-accent dark:text-dark-accent">Real-time Audio/Video Chat App</h3>
-                        <p class="project-description text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 leading-relaxed">
-                            A mobile application built with Flutter and Firebase, enabling real-time audio and video communication. PHP was used for specific backend functionalities.
-                        </p>
-                        <div class="mb-4">
-                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1">
-                                Flutter
-                            </span>
-                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1">
-                                Firebase
-                            </span>
-                            <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1">
-                                PHP
-                            </span>
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            <a href="#" class="inline-block text-sm font-medium text-light-accent dark:text-dark-accent hover:underline">View Details (Soon) &rarr;</a>
-                            <button class="enhance-description-btn text-sm font-medium text-light-accent dark:text-dark-accent hover:underline">✨ Enhance Description</button>
-                        </div>
-                        <div class="ai-enhanced-description-output mt-3" style="display: none;"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="experience" class="page-section py-16 md:py-24">
-            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">Work Experience & Training</h2>
-            <div class="max-w-3xl mx-auto">
-                <div class="space-y-10">
-                    <div class="relative pl-8 sm:pl-12 py-6 group border-l-2 border-light-accent dark:border-dark-accent">
-                        <div class="absolute w-4 h-4 bg-light-accent dark:bg-dark-accent rounded-full -left-[9px] top-7 border-4 border-light-bg dark:border-dark-bg"></div>
-                        <h3 class="text-xl font-semibold mb-1">C-DAC Cyber Security Intern</h3>
-                        <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mb-2">Centre for Development of Advanced Computing (C-DAC) | Dec 2024 – Feb 2025 (Ongoing)</p>
-                        <ul class="list-disc list-inside text-light-text-secondary dark:text-dark-text-secondary space-y-1 text-sm leading-relaxed">
-                            <li>Working with network analysis and security tools like Wireshark, Nmap, dnsEnum, Amass, and Nuclei to identify vulnerabilities and secure systems.</li>
-                            <li>Developing a Windows network security project utilizing Snort IDS for intrusion detection and prevention.</li>
-                            <li>Gaining hands-on experience in real-world cyber security challenges and best practices.</li>
-                        </ul>
-                    </div>
-                    <div class="relative pl-8 sm:pl-12 py-6 group border-l-2 border-light-accent dark:border-dark-accent">
-                         <div class="absolute w-4 h-4 bg-light-accent dark:bg-dark-accent rounded-full -left-[9px] top-7 border-4 border-light-bg dark:border-dark-bg"></div>
-                        <h3 class="text-xl font-semibold mb-1">Wireless Security Bootcamp</h3>
-                        <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mb-2">IIT Hyderabad | Jan 2025</p>
-                        <ul class="list-disc list-inside text-light-text-secondary dark:text-dark-text-secondary space-y-1 text-sm leading-relaxed">
-                            <li>Intensive training on cryptography, malware analysis, and various WiFi security protocols.</li>
-                            <li>Hands-on labs using tools such as Aircrack-ng, Wireshark, and Apktool for penetration testing and vulnerability assessment in wireless networks.</li>
-                            <li>Deepened understanding of wireless security threats and mitigation techniques.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="skills" class="page-section py-16 md:py-24">
-            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">Technical Skills</h2>
-            <div class="max-w-4xl mx-auto">
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold mb-4">Programming Languages</h3>
-                    <div id="skills-languages" class="flex flex-wrap gap-3">
-                        <span class="skill-badge">Python</span><span class="skill-badge">Java</span><span class="skill-badge">C/C++</span><span class="skill-badge">JavaScript</span><span class="skill-badge">SQL</span>
-                    </div>
-                </div>
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold mb-4">Frameworks & Libraries</h3>
-                    <div id="skills-frameworks" class="flex flex-wrap gap-3">
-                        <span class="skill-badge">React</span><span class="skill-badge">Node.js</span><span class="skill-badge">Express.js</span><span class="skill-badge">SpringBoot</span><span class="skill-badge">Tailwind CSS</span><span class="skill-badge">Java Swing</span>
-                    </div>
-                </div>
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold mb-4">Databases</h3>
-                    <div id="skills-databases" class="flex flex-wrap gap-3">
-                        <span class="skill-badge">MongoDB</span><span class="skill-badge">MySQL</span>
-                    </div>
-                </div>
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold mb-4">Tools & Platforms</h3>
-                    <div id="skills-tools" class="flex flex-wrap gap-3">
-                        <span class="skill-badge">Git & GitHub</span><span class="skill-badge">Linux</span><span class="skill-badge">Docker</span><span class="skill-badge">GCP (Google Cloud Platform)</span><span class="skill-badge">Wireshark</span><span class="skill-badge">Nmap</span><span class="skill-badge">Snort</span>
-                    </div>
-                </div>
-                <div class="mt-10 text-center">
-                     <button id="suggestProjectsBtn" class="px-6 py-3 text-md font-medium text-white bg-light-accent dark:bg-dark-accent hover:bg-light-accent-hover dark:hover:bg-dark-accent-hover rounded-lg shadow-md transition-transform transform hover:scale-105">
-                        ✨ Suggest Projects for My Skills
-                    </button>
-                    <div id="suggestedProjectsOutput" class="ai-generated-content text-left" style="display: none;"></div>
-                </div>
-            </div>
-            <style>
-                .skill-badge {
-                    @apply bg-light-accent/10 dark:bg-dark-accent/20 text-light-accent dark:text-dark-accent py-2 px-4 rounded-full text-sm font-medium transition-transform duration-200 hover:scale-110;
-                }
-            </style>
-        </section>
-
-        <section id="resume" class="page-section py-16 md:py-24 text-center">
-            <h2 class="text-3xl sm:text-4xl font-bold mb-8">My Resume</h2>
-            <p class="text-light-text-secondary dark:text-dark-text-secondary mb-8 max-w-xl mx-auto">
-                You can download my full resume to get a more detailed overview of my skills, experience, and projects.
-            </p>
-            <a id="resume-download" href="resume.pdf" download="Ganesh_Mane_Resume.pdf" class="inline-block px-10 py-4 text-lg font-medium text-white bg-light-accent dark:bg-dark-accent hover:bg-light-accent-hover dark:hover:bg-dark-accent-hover rounded-lg shadow-lg transition-transform transform hover:scale-105">
-                Download Resume (PDF)
+    <main
+      id="main-content"
+      class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12"
+    >
+      <!-- <section id="home" class="page-section active min-h-[calc(100vh-10rem)] flex flex-col justify-center items-center text-center"> -->
+      <!-- <section id="home" class="h-screen flex flex-col items-center justify-center text-center"> -->
+      <section
+        id="home"
+        class="flex flex-col items-center justify-center text-center"
+      >
+        <div class="max-w-3xl">
+          <h1
+            class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-light-text-primary dark:text-light-text-primary"
+          >
+            Hi, I'm
+            <span class="text-light-accent dark:text-dark-accent"
+              >Ganesh Mane</span
+            >
+          </h1>
+          <p
+            class="mt-4 text-lg sm:text-xl text-light-text-secondary dark:text-dark-text-secondary"
+          >
+            A passionate MERN Stack Developer & Information Technology student
+            at SGGS, with a keen interest in cyber security and competitive
+            programming.
+          </p>
+          <p
+            class="mt-2 text-md text-light-text-secondary dark:text-dark-text-secondary"
+          >
+            Currently interning at C-DAC in Cyber Security.
+          </p>
+          <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            <a
+              href="#contact"
+              data-page="contact"
+              class="nav-link inline-block px-8 py-3 text-lg font-medium text-white bg-light-accent dark:bg-dark-accent hover:bg-light-accent-hover dark:hover:bg-dark-accent-hover rounded-lg shadow-md transition-transform transform hover:scale-105"
+            >
+              Contact Me
             </a>
-            <p class="mt-4 text-xs text-light-text-secondary dark:text-dark-text-secondary">(Note: This is a placeholder PDF for now.)</p>
-        </section>
+            <a
+              href="#resume-download"
+              data-page="resume"
+              class="nav-link inline-block px-8 py-3 text-lg font-medium text-light-accent dark:text-dark-accent border border-light-accent dark:border-dark-accent hover:bg-light-accent/10 dark:hover:bg-dark-accent/10 rounded-lg shadow-md transition-transform transform hover:scale-105"
+            >
+              Download Resume
+            </a>
+          </div>
+        </div>
+      </section>
+      <section id="about" class="page-section py-16 md:py-24">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">
+          About Me & Education
+        </h2>
+        <div class="grid md:grid-cols-2 gap-12 items-start">
+          <div>
+            <h3 class="text-2xl font-semibold mb-4">Personal Bio</h3>
+            <p
+              class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed mb-4 text-justify"
+            >
+              I am a dedicated and enthusiastic Information Technology
+              undergraduate with a strong foundation in software development,
+              particularly using the MERN stack. My passion extends to cyber
+              security, where I am gaining practical experience through an
+              internship at C-DAC. I thrive on solving complex problems, which
+              is reflected in my active participation in competitive
+              programming.
+            </p>
+            <p
+              class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed text-justify"
+            >
+              I am always eager to learn new technologies and apply my skills to
+              create impactful solutions. My goal is to contribute to innovative
+              projects and grow as a versatile technology professional.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-2xl font-semibold mb-6">Education</h3>
+            <div class="space-y-8">
+              <div
+                class="p-6 bg-light-bg dark:bg-dark-muted rounded-lg shadow-md border border-light-border dark:border-dark-border"
+              >
+                <h4
+                  class="text-xl font-semibold text-light-accent dark:text-dark-accent"
+                >
+                  B.Tech in Information Technology
+                </h4>
+                <p
+                  class="text-light-text-secondary dark:text-dark-text-secondary"
+                >
+                  S.G.G.S. Institute of Engineering and Technology, Nanded
+                </p>
+                <p
+                  class="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-1"
+                >
+                  Expected Graduation: 2026 | CGPA: 8.38
+                </p>
+              </div>
+              <div
+                class="p-6 bg-light-bg dark:bg-dark-muted rounded-lg shadow-md border border-light-border dark:border-dark-border"
+              >
+                <h4
+                  class="text-xl font-semibold text-light-accent dark:text-dark-accent"
+                >
+                  Diploma in Computer Engineering
+                </h4>
+                <p
+                  class="text-light-text-secondary dark:text-dark-text-secondary"
+                >
+                  Government Polytechnic, Pune
+                </p>
+                <p
+                  class="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-1"
+                >
+                  Graduated: 2023 | Percentage: 90.33%
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-<section id="contact" class="page-section py-20 md:py-28 px-4 sm:px-6 lg:px-8">
-  <h2 class="text-4xl font-extrabold text-center text-light-text-primary dark:text-dark-text-primary mb-12">
-    Get In Touch
-  </h2>
+      <section id="projects" class="page-section py-16 md:py-24">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">
+          My Projects
+        </h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            class="project-card-item bg-light-bg dark:bg-dark-muted rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 border border-light-border dark:border-dark-border"
+          >
+            <div class="p-6">
+              <h3
+                class="project-title text-xl font-semibold mb-2 text-light-accent dark:text-dark-accent"
+              >
+                Bank Management System
+              </h3>
+              <p
+                class="project-description text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 leading-relaxed"
+              >
+                A desktop application developed using Java Swing and MySQL for
+                managing bank accounts, including features like account
+                creation, deposits, and withdrawals.
+              </p>
+              <div class="mb-4">
+                <span
+                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1"
+                >
+                  Java
+                </span>
+                <span
+                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1"
+                >
+                  Swing
+                </span>
+                <span
+                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1"
+                >
+                  JDBC
+                </span>
+                <span
+                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1"
+                >
+                  MySQL
+                </span>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <a
+                  href="#"
+                  class="inline-block text-sm font-medium text-light-accent dark:text-dark-accent hover:underline"
+                  >View Details (Soon) &rarr;</a
+                >
+                <button
+                  class="enhance-description-btn text-sm font-medium text-light-accent dark:text-dark-accent hover:underline"
+                >
+                  ✨ Enhance Description
+                </button>
+              </div>
+              <div
+                class="ai-enhanced-description-output mt-3"
+                style="display: none"
+              ></div>
+            </div>
+          </div>
+          <div
+            class="project-card-item bg-light-bg dark:bg-dark-muted rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 border border-light-border dark:border-dark-border"
+          >
+            <div class="p-6">
+              <h3
+                class="project-title text-xl font-semibold mb-2 text-light-accent dark:text-dark-accent"
+              >
+                Vaccine Management System
+              </h3>
+              <p
+                class="project-description text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 leading-relaxed"
+              >
+                A Java Swing application designed to track and manage vaccine
+                appointments and inventory, utilizing JDBC for database
+                connectivity.
+              </p>
+              <div class="mb-4">
+                <span
+                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1"
+                >
+                  Java
+                </span>
+                <span
+                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1"
+                >
+                  Swing
+                </span>
+                <span
+                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1"
+                >
+                  JDBC
+                </span>
+                <span
+                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1"
+                >
+                  MySQL
+                </span>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <a
+                  href="#"
+                  class="inline-block text-sm font-medium text-light-accent dark:text-dark-accent hover:underline"
+                  >View Details (Soon) &rarr;</a
+                >
+                <button
+                  class="enhance-description-btn text-sm font-medium text-light-accent dark:text-dark-accent hover:underline"
+                >
+                  ✨ Enhance Description
+                </button>
+              </div>
+              <div
+                class="ai-enhanced-description-output mt-3"
+                style="display: none"
+              ></div>
+            </div>
+          </div>
+          <div
+            class="project-card-item bg-light-bg dark:bg-dark-muted rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 border border-light-border dark:border-dark-border"
+          >
+            <div class="p-6">
+              <h3
+                class="project-title text-xl font-semibold mb-2 text-light-accent dark:text-dark-accent"
+              >
+                Real-time Audio/Video Chat App
+              </h3>
+              <p
+                class="project-description text-sm text-light-text-secondary dark:text-dark-text-secondary mb-4 leading-relaxed"
+              >
+                A mobile application built with Flutter and Firebase, enabling
+                real-time audio and video communication. PHP was used for
+                specific backend functionalities.
+              </p>
+              <div class="mb-4">
+                <span
+                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1"
+                >
+                  Flutter
+                </span>
+                <span
+                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1"
+                >
+                  Firebase
+                </span>
+                <span
+                  class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-light-accent bg-light-accent/20 dark:text-dark-accent dark:bg-dark-accent/20 last:mr-0 mr-1"
+                >
+                  PHP
+                </span>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <a
+                  href="#"
+                  class="inline-block text-sm font-medium text-light-accent dark:text-dark-accent hover:underline"
+                  >View Details (Soon) &rarr;</a
+                >
+                <button
+                  class="enhance-description-btn text-sm font-medium text-light-accent dark:text-dark-accent hover:underline"
+                >
+                  ✨ Enhance Description
+                </button>
+              </div>
+              <div
+                class="ai-enhanced-description-output mt-3"
+                style="display: none"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-  <div class="max-w-2xl mx-auto p-8 bg-light-bg dark:bg-dark-muted rounded-2xl shadow-2xl border border-light-border dark:border-dark-border">
-    <form id="contactForm" class="space-y-6">
-      <div>
-        <label for="name" class="block mb-2 text-sm font-semibold text-light-text-secondary dark:text-dark-text-secondary">
-          Your Name
-        </label>
-        <input type="text" id="name" name="name" required
-               class="w-full px-4 py-3 text-base text-light-text-primary dark:text-dark-text-primary bg-light-muted/40 dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:outline-none transition duration-200"
-               placeholder="Ganesh Mane">
-      </div>
+      <section id="experience" class="page-section py-16 md:py-24">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">
+          Work Experience & Training
+        </h2>
+        <div class="max-w-3xl mx-auto">
+          <div class="space-y-10">
+            <div
+              class="relative pl-8 sm:pl-12 py-6 group border-l-2 border-light-accent dark:border-dark-accent"
+            >
+              <div
+                class="absolute w-4 h-4 bg-light-accent dark:bg-dark-accent rounded-full -left-[9px] top-7 border-4 border-light-bg dark:border-dark-bg"
+              ></div>
+              <h3 class="text-xl font-semibold mb-1">
+                C-DAC Cyber Security Intern
+              </h3>
+              <p
+                class="text-sm text-light-text-secondary dark:text-dark-text-secondary mb-2"
+              >
+                Centre for Development of Advanced Computing (C-DAC) | Dec 2024
+                – Feb 2025 (Ongoing)
+              </p>
+              <ul
+                class="list-disc list-inside text-light-text-secondary dark:text-dark-text-secondary space-y-1 text-sm leading-relaxed"
+              >
+                <li>
+                  Working with network analysis and security tools like
+                  Wireshark, Nmap, dnsEnum, Amass, and Nuclei to identify
+                  vulnerabilities and secure systems.
+                </li>
+                <li>
+                  Developing a Windows network security project utilizing Snort
+                  IDS for intrusion detection and prevention.
+                </li>
+                <li>
+                  Gaining hands-on experience in real-world cyber security
+                  challenges and best practices.
+                </li>
+              </ul>
+            </div>
+            <div
+              class="relative pl-8 sm:pl-12 py-6 group border-l-2 border-light-accent dark:border-dark-accent"
+            >
+              <div
+                class="absolute w-4 h-4 bg-light-accent dark:bg-dark-accent rounded-full -left-[9px] top-7 border-4 border-light-bg dark:border-dark-bg"
+              ></div>
+              <h3 class="text-xl font-semibold mb-1">
+                Wireless Security Bootcamp
+              </h3>
+              <p
+                class="text-sm text-light-text-secondary dark:text-dark-text-secondary mb-2"
+              >
+                IIT Hyderabad | Jan 2025
+              </p>
+              <ul
+                class="list-disc list-inside text-light-text-secondary dark:text-dark-text-secondary space-y-1 text-sm leading-relaxed"
+              >
+                <li>
+                  Intensive training on cryptography, malware analysis, and
+                  various WiFi security protocols.
+                </li>
+                <li>
+                  Hands-on labs using tools such as Aircrack-ng, Wireshark, and
+                  Apktool for penetration testing and vulnerability assessment
+                  in wireless networks.
+                </li>
+                <li>
+                  Deepened understanding of wireless security threats and
+                  mitigation techniques.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div>
-        <label for="email" class="block mb-2 text-sm font-semibold text-light-text-secondary dark:text-dark-text-secondary">
-          Your Email
-        </label>
-        <input type="email" id="email" name="email" required
-               class="w-full px-4 py-3 text-base text-light-text-primary dark:text-dark-text-primary bg-light-muted/40 dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:outline-none transition duration-200"
-               placeholder="mane.ganesh@gmail.com">
-      </div>
+      <section id="skills" class="page-section py-16 md:py-24">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">
+          Technical Skills
+        </h2>
+        <div class="max-w-4xl mx-auto">
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4">Programming Languages</h3>
+            <div id="skills-languages" class="flex flex-wrap gap-3">
+              <span class="skill-badge">Python</span
+              ><span class="skill-badge">Java</span
+              ><span class="skill-badge">C/C++</span
+              ><span class="skill-badge">JavaScript</span
+              ><span class="skill-badge">SQL</span>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4">Frameworks & Libraries</h3>
+            <div id="skills-frameworks" class="flex flex-wrap gap-3">
+              <span class="skill-badge">React</span
+              ><span class="skill-badge">Node.js</span
+              ><span class="skill-badge">Express.js</span
+              ><span class="skill-badge">SpringBoot</span
+              ><span class="skill-badge">Tailwind CSS</span
+              ><span class="skill-badge">Java Swing</span>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4">Databases</h3>
+            <div id="skills-databases" class="flex flex-wrap gap-3">
+              <span class="skill-badge">MongoDB</span
+              ><span class="skill-badge">MySQL</span>
+            </div>
+          </div>
+          <div class="mb-8">
+            <h3 class="text-xl font-semibold mb-4">Tools & Platforms</h3>
+            <div id="skills-tools" class="flex flex-wrap gap-3">
+              <span class="skill-badge">Git & GitHub</span
+              ><span class="skill-badge">Linux</span
+              ><span class="skill-badge">Docker</span
+              ><span class="skill-badge">GCP (Google Cloud Platform)</span
+              ><span class="skill-badge">Wireshark</span
+              ><span class="skill-badge">Nmap</span
+              ><span class="skill-badge">Snort</span>
+            </div>
+          </div>
+          <div class="mt-10 text-center">
+            <button
+              id="suggestProjectsBtn"
+              class="px-6 py-3 text-md font-medium text-white bg-light-accent dark:bg-dark-accent hover:bg-light-accent-hover dark:hover:bg-dark-accent-hover rounded-lg shadow-md transition-transform transform hover:scale-105"
+            >
+              ✨ Suggest Projects for My Skills
+            </button>
+            <div
+              id="suggestedProjectsOutput"
+              class="ai-generated-content text-left"
+              style="display: none"
+            ></div>
+          </div>
+        </div>
+        <style>
+          .skill-badge {
+            @apply bg-light-accent/10 dark:bg-dark-accent/20 text-light-accent dark:text-dark-accent py-2 px-4 rounded-full text-sm font-medium transition-transform duration-200 hover:scale-110;
+          }
+        </style>
+      </section>
 
-      <div>
-        <label for="message" class="block mb-2 text-sm font-semibold text-light-text-secondary dark:text-dark-text-secondary">
-          Your Message
-        </label>
-        <textarea id="message" name="message" rows="5" required
-                  class="w-full px-4 py-3 text-base text-light-text-primary dark:text-dark-text-primary bg-light-muted/40 dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:outline-none transition duration-200"
-                  placeholder="Hi Ganesh, I'd like to connect..."></textarea>
-      </div>
+      <section id="resume" class="page-section py-16 md:py-24 text-center">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-8">My Resume</h2>
+        <p
+          class="text-light-text-secondary dark:text-dark-text-secondary mb-8 max-w-xl mx-auto"
+        >
+          You can download my full resume to get a more detailed overview of my
+          skills, experience, and projects.
+        </p>
+        <a
+          id="resume-download"
+          href="resume.pdf"
+          download="Ganesh_Mane_Resume.pdf"
+          class="inline-block px-10 py-4 text-lg font-medium text-white bg-light-accent dark:bg-dark-accent hover:bg-light-accent-hover dark:hover:bg-dark-accent-hover rounded-lg shadow-lg transition-transform transform hover:scale-105"
+        >
+          Download Resume (PDF)
+        </a>
+        <p
+          class="mt-4 text-xs text-light-text-secondary dark:text-dark-text-secondary"
+        >
+          (Note: This is a placeholder PDF for now.)
+        </p>
+      </section>
 
-      <button type="submit"
-              class="w-full px-6 py-3 text-lg font-medium text-white bg-light-accent dark:bg-dark-accent hover:bg-light-accent-hover dark:hover:bg-dark-accent-hover rounded-lg shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-accent dark:focus:ring-dark-accent">
-        Send Message
-      </button>
-    </form>
+      <section
+        id="contact"
+        class="page-section py-20 md:py-28 px-4 sm:px-6 lg:px-8"
+      >
+        <h2
+          class="text-4xl font-extrabold text-center text-light-text-primary dark:text-dark-text-primary mb-12"
+        >
+          Get In Touch
+        </h2>
 
-    <div id="formMessage" class="mt-4 text-center text-sm text-light-text-secondary dark:text-dark-text-secondary"></div>
-  </div>
+        <div
+          class="max-w-2xl mx-auto p-8 bg-light-bg dark:bg-dark-muted rounded-2xl shadow-2xl border border-light-border dark:border-dark-border"
+        >
+          <form id="contactForm" class="space-y-6">
+            <div>
+              <label
+                for="name"
+                class="block mb-2 text-sm font-semibold text-light-text-secondary dark:text-dark-text-secondary"
+              >
+                Your Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                class="w-full px-4 py-3 text-base text-light-text-primary dark:text-dark-text-primary bg-light-muted/40 dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:outline-none transition duration-200"
+                placeholder="Ganesh Mane"
+              />
+            </div>
 
-  <div class="text-center mt-14">
-    <p class="text-lg font-medium text-light-text-secondary dark:text-dark-text-secondary mb-4">Or connect with me on:</p>
-    <div class="flex justify-center gap-6">
-      <!-- Email -->
-      <a href="mailto:ganesh.mane.pc@gmail.com" class="text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent transition-colors" aria-label="Email Ganesh Mane">
-        <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-        </svg>
-      </a>
-      <!-- GitHub -->
-      <a href="https://github.com/Ganesh-PC018" target="_blank" rel="noopener noreferrer" class="text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent transition-colors" aria-label="GitHub Profile">
-        <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234C5.66 20.802 5.031 18.64 5.031 18.64c-.546-1.387-1.333-1.756-1.333-1.756-.89-.607.067-.595.067-.595 1.038.073 1.585 1.065 1.585 1.065.874 1.497 2.292 1.064 2.85.813.089-.634.34-1.065.617-1.31-2.665-.305-5.466-1.333-5.466-5.931 0-1.312.469-2.382 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.267 1.984-.4 3.004-.404 1.02.004 2.047.137 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.839 1.235 1.909 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .317.192.692.801.576C20.565 21.796 24 17.298 24 12c0-6.627-5.373-12-12-12z" />
-        </svg>
-      </a>
-      <!-- LinkedIn -->
-      <a href="https://linkedin.com/in/ganeshrmane" target="_blank" rel="noopener noreferrer" class="text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent transition-colors" aria-label="LinkedIn Profile">
-        <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-        </svg>
-      </a>
-    </div>
-  </div>
-</section>
+            <div>
+              <label
+                for="email"
+                class="block mb-2 text-sm font-semibold text-light-text-secondary dark:text-dark-text-secondary"
+              >
+                Your Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full px-4 py-3 text-base text-light-text-primary dark:text-dark-text-primary bg-light-muted/40 dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:outline-none transition duration-200"
+                placeholder="mane.ganesh@gmail.com"
+              />
+            </div>
 
+            <div>
+              <label
+                for="message"
+                class="block mb-2 text-sm font-semibold text-light-text-secondary dark:text-dark-text-secondary"
+              >
+                Your Message
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                required
+                class="w-full px-4 py-3 text-base text-light-text-primary dark:text-dark-text-primary bg-light-muted/40 dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:outline-none transition duration-200"
+                placeholder="Hi Ganesh, I'd like to connect..."
+              ></textarea>
+            </div>
 
+            <button
+              type="submit"
+              class="w-full px-6 py-3 text-lg font-medium text-white bg-light-accent dark:bg-dark-accent hover:bg-light-accent-hover dark:hover:bg-dark-accent-hover rounded-lg shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-light-accent dark:focus:ring-dark-accent"
+            >
+              Send Message
+            </button>
+          </form>
+
+          <div
+            id="formMessage"
+            class="mt-4 text-center text-sm text-light-text-secondary dark:text-dark-text-secondary"
+          ></div>
+        </div>
+
+        <div class="text-center mt-14">
+          <p
+            class="text-lg font-medium text-light-text-secondary dark:text-dark-text-secondary mb-4"
+          >
+            Or connect with me on:
+          </p>
+          <div class="flex justify-center gap-6">
+            <!-- Email -->
+            <a
+              href="mailto:ganesh.mane.pc@gmail.com"
+              class="text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent transition-colors"
+              aria-label="Email Ganesh Mane"
+            >
+              <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                />
+              </svg>
+            </a>
+            <!-- GitHub -->
+            <a
+              href="https://github.com/Ganesh-PC018"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent transition-colors"
+              aria-label="GitHub Profile"
+            >
+              <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234C5.66 20.802 5.031 18.64 5.031 18.64c-.546-1.387-1.333-1.756-1.333-1.756-.89-.607.067-.595.067-.595 1.038.073 1.585 1.065 1.585 1.065.874 1.497 2.292 1.064 2.85.813.089-.634.34-1.065.617-1.31-2.665-.305-5.466-1.333-5.466-5.931 0-1.312.469-2.382 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.267 1.984-.4 3.004-.404 1.02.004 2.047.137 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.839 1.235 1.909 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .317.192.692.801.576C20.565 21.796 24 17.298 24 12c0-6.627-5.373-12-12-12z"
+                />
+              </svg>
+            </a>
+            <!-- LinkedIn -->
+            <a
+              href="https://linkedin.com/in/ganeshrmane"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-light-text-secondary dark:text-dark-text-secondary hover:text-light-accent dark:hover:text-dark-accent transition-colors"
+              aria-label="LinkedIn Profile"
+            >
+              <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="py-8 border-t border-light-border dark:border-dark-border">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-light-text-secondary dark:text-dark-text-secondary">
-            <p>&copy; <span id="currentYear"></span> Ganesh Mane. All rights reserved.</p>
-            <p class="mt-1">Designed with passion and coded with MERN stack principles in mind.</p>
-        </div>
+      <div
+        class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-light-text-secondary dark:text-dark-text-secondary"
+      >
+        <p>
+          &copy; <span id="currentYear"></span> Ganesh Mane. All rights
+          reserved.
+        </p>
+        <p class="mt-1">
+          Designed with passion and coded with MERN stack principles in mind.
+        </p>
+      </div>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentYear = new Date().getFullYear();
-            document.getElementById('currentYear').textContent = currentYear;
+      document.addEventListener("DOMContentLoaded", () => {
+        const currentYear = new Date().getFullYear();
+        document.getElementById("currentYear").textContent = currentYear;
 
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const moonIcon = document.getElementById('moonIcon');
-            const sunIcon = document.getElementById('sunIcon');
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
-            const mobileMenu = document.getElementById('mobileMenu');
-            const hamburgerIcon = mobileMenuButton.querySelector('.hamburger');
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById("darkModeToggle");
+        const moonIcon = document.getElementById("moonIcon");
+        const sunIcon = document.getElementById("sunIcon");
 
-            // Dark Mode
-            const applyTheme = (isDark) => {
-                if (isDark) {
-                    document.documentElement.classList.add('dark');
-                    moonIcon.classList.add('hidden');
-                    sunIcon.classList.remove('hidden');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    moonIcon.classList.remove('hidden');
-                    sunIcon.classList.add('hidden');
-                }
-            };
+        const applyTheme = (isDark) => {
+          document.documentElement.classList.toggle("dark", isDark);
+          moonIcon.classList.toggle("hidden", isDark);
+          sunIcon.classList.toggle("hidden", !isDark);
+        };
 
-            let isDarkMode = localStorage.getItem('darkMode') === 'true' || 
-                             (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            applyTheme(isDarkMode);
-            
-            darkModeToggle.addEventListener('click', () => {
-                isDarkMode = !isDarkMode;
-                localStorage.setItem('darkMode', isDarkMode);
-                applyTheme(isDarkMode);
-            });
+        let isDarkMode =
+          localStorage.getItem("darkMode") === "true" ||
+          (!("darkMode" in localStorage) &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-            // Mobile Menu
-            mobileMenuButton.addEventListener('click', () => {
-                const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
-                mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
-                mobileMenu.classList.toggle('hidden');
-                hamburgerIcon.classList.toggle('open');
-                mobileMenuButton.setAttribute('aria-label', !isExpanded ? 'Close menu' : 'Open menu');
-            });
+        applyTheme(isDarkMode);
 
-            // Page Navigation
-            const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
-            const pageSections = document.querySelectorAll('.page-section');
-            const desktopNavLinks = document.querySelectorAll('header nav.hidden a.nav-link');
-
-            function showPage(pageId) {
-                pageSections.forEach(section => section.classList.remove('active'));
-                const activePage = document.getElementById(pageId);
-                if (activePage) activePage.classList.add('active');
-
-                desktopNavLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.dataset.page === pageId) link.classList.add('active');
-                });
-                
-                document.querySelectorAll('.mobile-nav-link').forEach(link => {
-                    link.classList.remove('text-light-accent', 'dark:text-dark-accent', 'font-semibold');
-                     if (link.dataset.page === pageId) {
-                        link.classList.add('text-light-accent', 'dark:text-dark-accent', 'font-semibold');
-                    }
-                });
-
-                if (!mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
-                    mobileMenuButton.setAttribute('aria-expanded', 'false');
-                    hamburgerIcon.classList.remove('open');
-                    mobileMenuButton.setAttribute('aria-label', 'Open menu');
-                }
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const pageId = link.dataset.page;
-                    if (pageId) showPage(pageId);
-                });
-            });
-            
-            showPage('home');
-
-            // Contact Form
-            const contactForm = document.getElementById('contactForm');
-            const formMessage = document.getElementById('formMessage');
-            if (contactForm) {
-                contactForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    formMessage.textContent = 'Sending your message...';
-                    formMessage.className = 'mt-4 text-center text-sm text-blue-600 dark:text-blue-400';
-                    setTimeout(() => {
-                        formMessage.textContent = 'Thank you! Your message has been sent (simulated).';
-                        formMessage.className = 'mt-4 text-center text-sm text-green-600 dark:text-green-400';
-                        contactForm.reset();
-                    }, 1500);
-                });
-            }
-
-            // Skip to content link
-            const skipLink = document.querySelector('.skip-to-content');
-            if (skipLink) {
-                skipLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    if (targetElement) {
-                        targetElement.setAttribute('tabindex', '-1');
-                        targetElement.focus();
-                    }
-                });
-            }
-
-            // --- Gemini API Integration ---
-            const GEMINI_API_KEY = ""; // IMPORTANT: User must add their API key here
-
-            // Function to call Gemini API
-            async function callGeminiAPI(prompt) {
-                if (!GEMINI_API_KEY) {
-                    return "Error: API Key not provided. Please add your Gemini API key in the script.";
-                }
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-                
-                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
-                const payload = { contents: chatHistory };
-
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        console.error("API Error Response:", errorData);
-                        return `Error: API request failed with status ${response.status}. ${errorData.error?.message || 'Unknown error'}`;
-                    }
-                    const result = await response.json();
-                    if (result.candidates && result.candidates.length > 0 &&
-                        result.candidates[0].content && result.candidates[0].content.parts &&
-                        result.candidates[0].content.parts.length > 0) {
-                        return result.candidates[0].content.parts[0].text;
-                    } else {
-                        console.error("Unexpected API response structure:", result);
-                        return "Error: Could not retrieve text from API response.";
-                    }
-                } catch (error) {
-                    console.error("Fetch Error:", error);
-                    return `Error: Network or other error occurred: ${error.message}`;
-                }
-            }
-
-            // 1. Enhance Project Description
-            document.querySelectorAll('.enhance-description-btn').forEach(button => {
-                button.addEventListener('click', async (e) => {
-                    const projectCard = e.target.closest('.project-card-item');
-                    const title = projectCard.querySelector('.project-title').textContent;
-                    const currentDescription = projectCard.querySelector('.project-description').textContent;
-                    const outputDiv = projectCard.querySelector('.ai-enhanced-description-output');
-                    
-                    outputDiv.style.display = 'block';
-                    outputDiv.innerHTML = 'Enhancing description... <div class="loading-spinner"></div>';
-                    e.target.disabled = true;
-
-                    const prompt = `You are an expert technical writer for developer portfolios. Enhance the following project description for a MERN stack developer's portfolio. Make it professional, concise, and highlight key achievements and technologies used.
-                    Project Title: "${title}"
-                    Current Description: "${currentDescription.trim()}"
-                    
-                    Provide only the enhanced description text.`;
-                    
-                    const enhancedDescription = await callGeminiAPI(prompt);
-                    outputDiv.innerHTML = enhancedDescription.replace(/\n/g, '<br>'); // Basic formatting
-                    e.target.disabled = false;
-                    e.target.textContent = "✨ Regenerate Description";
-                });
-            });
-
-            // 2. Suggest Projects for My Skills
-            const suggestProjectsBtn = document.getElementById('suggestProjectsBtn');
-            const suggestedProjectsOutput = document.getElementById('suggestedProjectsOutput');
-
-            if (suggestProjectsBtn) {
-                suggestProjectsBtn.addEventListener('click', async () => {
-                    suggestedProjectsOutput.style.display = 'block';
-                    suggestedProjectsOutput.innerHTML = 'Generating project ideas... <div class="loading-spinner"></div>';
-                    suggestProjectsBtn.disabled = true;
-
-                    const skills = [];
-                    document.querySelectorAll('#skills-languages .skill-badge, #skills-frameworks .skill-badge, #skills-databases .skill-badge, #skills-tools .skill-badge').forEach(badge => {
-                        skills.push(badge.textContent);
-                    });
-                    const skillsString = skills.join(', ');
-
-                    const prompt = `I am a MERN stack developer with the following skills: ${skillsString}. 
-                    Suggest 3 innovative and practical project ideas suitable for my portfolio. 
-                    For each project, provide:
-                    1. A catchy Project Title.
-                    2. A brief Concept (1-2 sentences).
-                    3. Key Technologies that could be used (especially from my skill list).
-                    
-                    Format the output clearly for each project. For example:
-                    **Project Title:** [Title]
-                    **Concept:** [Concept]
-                    **Key Technologies:** [Tech1, Tech2, Tech3]`;
-
-                    const projectSuggestions = await callGeminiAPI(prompt);
-                    // Replace markdown-like bolding with HTML strong tags and newlines with <br>
-                    let formattedSuggestions = projectSuggestions.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                    formattedSuggestions = formattedSuggestions.replace(/\n/g, '<br>');
-                    suggestedProjectsOutput.innerHTML = formattedSuggestions;
-                    suggestProjectsBtn.disabled = false;
-                    suggestProjectsBtn.textContent = "✨ Regenerate Project Ideas";
-                });
-            }
+        darkModeToggle.addEventListener("click", () => {
+          isDarkMode = !isDarkMode;
+          localStorage.setItem("darkMode", isDarkMode);
+          applyTheme(isDarkMode);
         });
+
+        // Mobile Menu
+        const mobileMenuButton = document.getElementById("mobileMenuButton");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const hamburgerIcon = document.querySelector(".hamburger");
+
+        mobileMenuButton.addEventListener("click", () => {
+          const isMenuOpen = !mobileMenu.classList.contains("hidden");
+          mobileMenu.classList.toggle("hidden", isMenuOpen);
+          mobileMenuButton.setAttribute("aria-expanded", String(!isMenuOpen));
+          mobileMenuButton.setAttribute(
+            "aria-label",
+            isMenuOpen ? "Open menu" : "Close menu"
+          );
+          hamburgerIcon.classList.toggle("open", !isMenuOpen);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        // Page Navigation
+        const navLinks = document.querySelectorAll(
+          ".nav-link, .mobile-nav-link"
+        );
+        const pageSections = document.querySelectorAll(".page-section");
+        const desktopNavLinks = document.querySelectorAll(
+          "header nav.hidden a.nav-link"
+        );
+
+        function showPage(pageId) {
+          pageSections.forEach((section) => section.classList.remove("active"));
+          const activePage = document.getElementById(pageId);
+          if (activePage) activePage.classList.add("active");
+
+          desktopNavLinks.forEach((link) => {
+            link.classList.toggle("active", link.dataset.page === pageId);
+          });
+
+          document.querySelectorAll(".mobile-nav-link").forEach((link) => {
+            const isActive = link.dataset.page === pageId;
+            link.classList.toggle("text-light-accent", isActive);
+            link.classList.toggle("dark:text-dark-accent", isActive);
+            link.classList.toggle("font-semibold", isActive);
+          });
+        }
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const pageId = link.dataset.page;
+            if (pageId) showPage(pageId);
+          });
+        });
+
+        showPage("home");
+
+        // Contact Form
+        const contactForm = document.getElementById("contactForm");
+        const formMessage = document.getElementById("formMessage");
+
+        if (contactForm) {
+          contactForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            formMessage.textContent = "Sending your message...";
+            formMessage.className =
+              "mt-4 text-center text-sm text-blue-600 dark:text-blue-400";
+            setTimeout(() => {
+              formMessage.textContent =
+                "Thank you! Your message has been sent (simulated).";
+              formMessage.className =
+                "mt-4 text-center text-sm text-green-600 dark:text-green-400";
+              contactForm.reset();
+            }, 1500);
+          });
+        }
+
+        // Skip to content
+        const skipLink = document.querySelector(".skip-to-content");
+        if (skipLink) {
+          skipLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            const targetId = skipLink.getAttribute("href").substring(1);
+            const target = document.getElementById(targetId);
+            if (target) {
+              target.setAttribute("tabindex", "-1");
+              target.focus();
+            }
+          });
+        }
+
+        // Gemini API
+        const GEMINI_API_KEY = ""; // <--- Add your key here
+
+        async function callGeminiAPI(prompt) {
+          if (!GEMINI_API_KEY) {
+            return "Error: API Key not provided.";
+          }
+          const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+          const payload = {
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+          };
+
+          try {
+            const response = await fetch(apiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+              const errorData = await response.json();
+              return `Error: ${response.status} - ${
+                errorData.error?.message || "Unknown error"
+              }`;
+            }
+
+            const result = await response.json();
+            return (
+              result?.candidates?.[0]?.content?.parts?.[0]?.text ||
+              "Error: Unexpected API response structure."
+            );
+          } catch (error) {
+            return `Error: ${error.message}`;
+          }
+        }
+
+        // Enhance Project Descriptions
+        document
+          .querySelectorAll(".enhance-description-btn")
+          .forEach((button) => {
+            button.addEventListener("click", async (e) => {
+              const projectCard = e.target.closest(".project-card-item");
+              const title =
+                projectCard.querySelector(".project-title").textContent;
+              const currentDescription = projectCard.querySelector(
+                ".project-description"
+              ).textContent;
+              const outputDiv = projectCard.querySelector(
+                ".ai-enhanced-description-output"
+              );
+
+              outputDiv.style.display = "block";
+              outputDiv.innerHTML =
+                'Enhancing description... <div class="loading-spinner"></div>';
+              e.target.disabled = true;
+
+              const prompt = `You are an expert technical writer. Enhance this project for a MERN portfolio:
+        Title: "${title}"
+        Description: "${currentDescription.trim()}"`;
+
+              const enhanced = await callGeminiAPI(prompt);
+              outputDiv.innerHTML = enhanced.replace(/\n/g, "<br>");
+              e.target.disabled = false;
+              e.target.textContent = "✨ Regenerate Description";
+            });
+          });
+
+        // Suggest Projects Button
+        const suggestProjectsBtn =
+          document.getElementById("suggestProjectsBtn");
+        const suggestedProjectsOutput = document.getElementById(
+          "suggestedProjectsOutput"
+        );
+
+        if (suggestProjectsBtn) {
+          suggestProjectsBtn.addEventListener("click", async () => {
+            suggestedProjectsOutput.style.display = "block";
+            suggestedProjectsOutput.innerHTML =
+              'Generating project ideas... <div class="loading-spinner"></div>';
+
+            const prompt = `Suggest 5 unique MERN stack project ideas that demonstrate frontend/backend skills, use modern libraries, and are suitable for internships.`;
+            const suggestions = await callGeminiAPI(prompt);
+            suggestedProjectsOutput.innerHTML = suggestions.replace(
+              /\n/g,
+              "<br>"
+            );
+          });
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
